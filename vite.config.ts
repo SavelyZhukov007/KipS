@@ -8,7 +8,6 @@ export default defineConfig({
     port: 5173,
   },
   build: {
-    minify: 'terser',
     assetsInlineLimit: 100000000
   },
 });
