@@ -179,7 +179,7 @@ function Sidebar({
             <ExportItem label="Vite-проект (zip)"      onClick={() => { exportBookVite(book); setExportMenu(false) }} />
             <ExportItem label="Один HTML-файл"          onClick={() => { exportBookSingleHTML(book); setExportMenu(false) }} />
             <ExportItem label="Markdown (.md)"          onClick={() => { exportBookMarkdown(book); setExportMenu(false) }} />
-            <ExportItem label=".codex.json (для импорта)" onClick={() => { exportBookJSON(book); setExportMenu(false) }} />
+            <ExportItem label=".kips.json (для импорта)" onClick={() => { exportBookJSON(book); setExportMenu(false) }} />
           </div>
         )}
       </div>
@@ -383,7 +383,7 @@ function TopBar({ book, note, chapter, onPreview }: {
         </button>
         {exportSub === 'note' && note && chapter && (
           <ExportSubmenu onClose={() => setExportSub('none')}>
-            <ExportItem label=".codex.json" onClick={() => { exportNote(book, chapter.id, note.id, 'json'); setExportSub('none') }} />
+            <ExportItem label=".kips.json" onClick={() => { exportNote(book, chapter.id, note.id, 'json'); setExportSub('none') }} />
             <ExportItem label="Markdown"    onClick={() => { exportNote(book, chapter.id, note.id, 'md');   setExportSub('none') }} />
             <ExportItem label="HTML"        onClick={() => { exportNote(book, chapter.id, note.id, 'html'); setExportSub('none') }} />
           </ExportSubmenu>
@@ -397,7 +397,7 @@ function TopBar({ book, note, chapter, onPreview }: {
         </button>
         {exportSub === 'chapter' && chapter && (
           <ExportSubmenu onClose={() => setExportSub('none')}>
-            <ExportItem label=".codex.json" onClick={() => { exportChapter(book, chapter.id, 'json'); setExportSub('none') }} />
+            <ExportItem label=".kips.json" onClick={() => { exportChapter(book, chapter.id, 'json'); setExportSub('none') }} />
             <ExportItem label="Markdown"    onClick={() => { exportChapter(book, chapter.id, 'md');   setExportSub('none') }} />
             <ExportItem label="HTML"        onClick={() => { exportChapter(book, chapter.id, 'html'); setExportSub('none') }} />
           </ExportSubmenu>

@@ -72,7 +72,7 @@ function Header() {
         Платформа для конспектов
       </div>
       <h1 className="serif" style={{ fontSize: 'clamp(3.4rem, 7vw, 5.4rem)', fontWeight: 500, letterSpacing: '0.02em', lineHeight: 1, color: 'var(--ink)', marginBottom: 14 }}>
-        Codex
+        KipS
       </h1>
       <div className="serif-text" style={{ fontStyle: 'italic', color: 'var(--ink-soft)', fontSize: 18 }}>
         Собирайте знания в книги. Делитесь страницами.
@@ -319,7 +319,7 @@ function CreateBookModal({ onClose, onCreate }: {
     <ModalShell onClose={onClose}>
       <h2 className="serif" style={{ fontSize: 28, fontWeight: 500, marginBottom: 8 }}>Новая книга</h2>
       <p className="serif-text" style={{ fontStyle: 'italic', color: 'var(--ink-faint)', marginBottom: 26 }}>
-        Дайте название — главу и первый конспект Codex создаст за вас.
+        Дайте название — главу и первый конспект KipS создаст за вас.
       </p>
 
       <Field label="Название">
@@ -363,7 +363,7 @@ function ImportModal({ onClose, onImport }: { onClose: () => void; onImport: (bo
         const obj = JSON.parse(ev.target?.result as string)
         // допускаем файл, экспортированный как book или как { book: ... }
         const book: Book = obj.book ?? obj
-        if (!book || !Array.isArray(book.chapters)) throw new Error('Не похоже на книгу Codex')
+        if (!book || !Array.isArray(book.chapters)) throw new Error('Не похоже на книгу KipS')
         onImport(book)
       } catch (err) {
         setError(String(err))
@@ -376,7 +376,7 @@ function ImportModal({ onClose, onImport }: { onClose: () => void; onImport: (bo
     <ModalShell onClose={onClose}>
       <h2 className="serif" style={{ fontSize: 26, fontWeight: 500, marginBottom: 8 }}>Импорт книги</h2>
       <p className="serif-text" style={{ fontStyle: 'italic', color: 'var(--ink-faint)', marginBottom: 26 }}>
-        Загрузите файл .codex.json — это формат, в котором Codex экспортирует книги.
+        Загрузите файл .kips.json — это формат, в котором KipS экспортирует книги.
       </p>
 
       <label
@@ -388,7 +388,7 @@ function ImportModal({ onClose, onImport }: { onClose: () => void; onImport: (bo
         }}
       >
         <div style={{ fontSize: 32, marginBottom: 8, color: 'var(--ink-faint)' }}>↓</div>
-        <div className="serif-text">Выбрать файл .codex.json</div>
+        <div className="serif-text">Выбрать файл .kips.json</div>
         <input type="file" accept=".json,application/json" onChange={handleFile} style={{ display: 'none' }} />
       </label>
 
