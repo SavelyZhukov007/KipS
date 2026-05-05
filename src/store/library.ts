@@ -23,7 +23,7 @@ function load(): LibraryState {
 }
 
 function save() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)) } catch {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)) } catch { }
 }
 
 function emit() {
@@ -141,7 +141,7 @@ export function moveChapter(bookId: string, chapterId: string, direction: 'up' |
       const ni = direction === 'up' ? idx - 1 : idx + 1
       if (ni < 0 || ni >= b.chapters.length) return b
       const ch = [...b.chapters]
-      ;[ch[idx], ch[ni]] = [ch[ni], ch[idx]]
+        ;[ch[idx], ch[ni]] = [ch[ni], ch[idx]]
       return { ...b, chapters: ch, updatedAt: now() }
     }),
   }))
@@ -225,7 +225,7 @@ export function moveNote(bookId: string, chapterId: string, noteId: string, dire
           const ni = direction === 'up' ? idx - 1 : idx + 1
           if (ni < 0 || ni >= c.notes.length) return c
           const ns = [...c.notes]
-          ;[ns[idx], ns[ni]] = [ns[ni], ns[idx]]
+            ;[ns[idx], ns[ni]] = [ns[ni], ns[idx]]
           return { ...c, notes: ns }
         }),
         updatedAt: now(),

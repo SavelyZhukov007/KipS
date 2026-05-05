@@ -19,17 +19,17 @@
 import type { AnimType } from '../types'
 
 const COL = {
-  paper:  '#f5efe1',
-  ink:    '#211a12',
-  inkSoft:'#4a3e2c',
-  faint:  '#7d6b4a',
-  rule:   '#b9a875',
+  paper: '#f5efe1',
+  ink: '#211a12',
+  inkSoft: '#4a3e2c',
+  faint: '#7d6b4a',
+  rule: '#b9a875',
   accent: '#8b3a2f',
-  accent2:'#b66a4d',
-  gold:   '#a07a3c',
-  leaf:   '#5a6b3a',
-  azure:  '#3e6a8c',
-  panel:  '#ede4d0',
+  accent2: '#b66a4d',
+  gold: '#a07a3c',
+  leaf: '#5a6b3a',
+  azure: '#3e6a8c',
+  panel: '#ede4d0',
 }
 
 // ───────────────────────────── helpers ─────────────────────────────
@@ -42,13 +42,13 @@ function paperBg(ctx: CanvasRenderingContext2D, W: number, H: number) {
 function gridFrame(ctx: CanvasRenderingContext2D, W: number, H: number, pad = 16) {
   ctx.strokeStyle = COL.rule
   ctx.lineWidth = 1
-  ctx.strokeRect(pad + 0.5, pad + 0.5, W - 2*pad - 1, H - 2*pad - 1)
+  ctx.strokeRect(pad + 0.5, pad + 0.5, W - 2 * pad - 1, H - 2 * pad - 1)
 }
 
 // Преобразование математической координаты (xMin..xMax, yMin..yMax) в пиксели
 function makeMap(W: number, H: number, xMin: number, xMax: number, yMin: number, yMax: number, pad = 24) {
-  const sx = (W - 2*pad) / (xMax - xMin)
-  const sy = (H - 2*pad) / (yMax - yMin)
+  const sx = (W - 2 * pad) / (xMax - xMin)
+  const sy = (H - 2 * pad) / (yMax - yMin)
   return {
     x: (x: number) => pad + (x - xMin) * sx,
     y: (y: number) => H - pad - (y - yMin) * sy,
@@ -73,30 +73,30 @@ function bool(p: any, k: string, def = false): boolean { const v = p?.[k]; retur
 
 function fnEval(name: string, x: number, a = 1, b = 1): number {
   switch (name) {
-    case 'sin':  return a * Math.sin(b * x)
-    case 'cos':  return a * Math.cos(b * x)
-    case 'pow':  return a * Math.pow(x, Math.max(1, Math.round(b * 2)))
-    case 'exp':  return a * Math.exp(b * x * 0.5)
-    case 'ln':   return x > 0.01 ? a * Math.log(x) * b : NaN
-    case 'poly': return a * x*x*x + b * x
-    case 'cubic':return x*x*x - 2*x - 1
-    case 'quad': return x*x - 2
-    case 'bell': return Math.exp(-x*x)
-    case 'parab':return Math.max(0, 1 - x*x)
+    case 'sin': return a * Math.sin(b * x)
+    case 'cos': return a * Math.cos(b * x)
+    case 'pow': return a * Math.pow(x, Math.max(1, Math.round(b * 2)))
+    case 'exp': return a * Math.exp(b * x * 0.5)
+    case 'ln': return x > 0.01 ? a * Math.log(x) * b : NaN
+    case 'poly': return a * x * x * x + b * x
+    case 'cubic': return x * x * x - 2 * x - 1
+    case 'quad': return x * x - 2
+    case 'bell': return Math.exp(-x * x)
+    case 'parab': return Math.max(0, 1 - x * x)
   }
   return Math.sin(x)
 }
 
 function fnDeriv(name: string, x: number, a = 1, b = 1): number {
   switch (name) {
-    case 'sin':  return a * b * Math.cos(b * x)
-    case 'cos':  return -a * b * Math.sin(b * x)
-    case 'pow':  { const n = Math.max(1, Math.round(b * 2)); return a * n * Math.pow(x, n - 1) }
-    case 'exp':  return a * 0.5 * b * Math.exp(b * x * 0.5)
-    case 'ln':   return x > 0.01 ? a * b / x : NaN
-    case 'poly': return 3 * a * x*x + b
-    case 'cubic':return 3*x*x - 2
-    case 'quad': return 2*x
+    case 'sin': return a * b * Math.cos(b * x)
+    case 'cos': return -a * b * Math.sin(b * x)
+    case 'pow': { const n = Math.max(1, Math.round(b * 2)); return a * n * Math.pow(x, n - 1) }
+    case 'exp': return a * 0.5 * b * Math.exp(b * x * 0.5)
+    case 'ln': return x > 0.01 ? a * b / x : NaN
+    case 'poly': return 3 * a * x * x + b
+    case 'cubic': return 3 * x * x - 2
+    case 'quad': return 2 * x
   }
   return Math.cos(x)
 }
@@ -238,7 +238,7 @@ function drawLinearTransform(ctx: CanvasRenderingContext2D, W: number, H: number
   // собственные векторы (вещественные)
   if (bool(p, 'showEigen', true)) {
     const tr = tgt[0] + tgt[3], dt = det
-    const disc = tr*tr - 4*dt
+    const disc = tr * tr - 4 * dt
     if (disc > 0) {
       const l1 = (tr + Math.sqrt(disc)) / 2
       const l2 = (tr - Math.sqrt(disc)) / 2
@@ -344,15 +344,15 @@ function drawGradientField(ctx: CanvasRenderingContext2D, W: number, H: number, 
   const levels = Math.round(num(p, 'levels', 10))
 
   const f = (x: number, y: number) => {
-    if (fn === 'paraboloid') return x*x + y*y
-    if (fn === 'saddle')     return x*x - y*y
-    if (fn === 'sincos')     return Math.sin(x) * Math.cos(y)
+    if (fn === 'paraboloid') return x * x + y * y
+    if (fn === 'saddle') return x * x - y * y
+    if (fn === 'sincos') return Math.sin(x) * Math.cos(y)
     return 0
   }
   const grad = (x: number, y: number) => {
-    if (fn === 'paraboloid') return [2*x, 2*y]
-    if (fn === 'saddle')     return [2*x, -2*y]
-    if (fn === 'sincos')     return [Math.cos(x) * Math.cos(y), -Math.sin(x) * Math.sin(y)]
+    if (fn === 'paraboloid') return [2 * x, 2 * y]
+    if (fn === 'saddle') return [2 * x, -2 * y]
+    if (fn === 'sincos') return [Math.cos(x) * Math.cos(y), -Math.sin(x) * Math.sin(y)]
     return [0, 0]
   }
 
@@ -661,14 +661,14 @@ function drawVectorFieldCurl(ctx: CanvasRenderingContext2D, W: number, H: number
 
   const F = (x: number, y: number) => {
     if (kind === 'vortex') return [-y, x]
-    if (kind === 'sink')   return [x, y]
-    if (kind === 'shear')  return [y, 0]
+    if (kind === 'sink') return [x, y]
+    if (kind === 'shear') return [y, 0]
     return [0, 0]
   }
   const curl = (x: number, y: number) => {
     if (kind === 'vortex') return 2
-    if (kind === 'sink')   return 0
-    if (kind === 'shear')  return -1
+    if (kind === 'sink') return 0
+    if (kind === 'shear') return -1
     return 0
   }
 
@@ -867,7 +867,7 @@ function drawProjectile(ctx: CanvasRenderingContext2D, W: number, H: number, t: 
   arrow(cx, cy, 0, g * 2.5, COL.azure)
 
   ctx.fillStyle = COL.faint; ctx.font = '11px JetBrains Mono'
-  ctx.fillText(`v₀ = ${v0} м/с,  α = ${(angle*180/Math.PI).toFixed(0)}°,  дальность ≈ ${xMax.toFixed(1)} м`, 28, H - 24)
+  ctx.fillText(`v₀ = ${v0} м/с,  α = ${(angle * 180 / Math.PI).toFixed(0)}°,  дальность ≈ ${xMax.toFixed(1)} м`, 28, H - 24)
 }
 
 // ───────────────────────────── 12. Кеплеровская орбита ─────────────────────────────
@@ -976,7 +976,7 @@ function drawInterference(ctx: CanvasRenderingContext2D, W: number, H: number, t
     const b = Math.round(225 - v * 180)
     for (let dy = 0; dy < 2; dy++) for (let dx = 0; dx < 2; dx++) {
       const idx = ((y + dy) * W + (x + dx)) * 4
-      data[idx] = r; data[idx+1] = g; data[idx+2] = b; data[idx+3] = 255
+      data[idx] = r; data[idx + 1] = g; data[idx + 2] = b; data[idx + 3] = 255
     }
   }
   ctx.putImageData(img, 0, 0)
@@ -1001,13 +1001,13 @@ function drawElectric(ctx: CanvasRenderingContext2D, W: number, H: number, t: nu
   const m = makeMap(W, H, xMin, xMax, yMin, yMax)
 
   const c1 = { x: -sep, y: 0, q: q1 }
-  const c2 = { x:  sep, y: 0, q: q2 }
+  const c2 = { x: sep, y: 0, q: q2 }
 
   const E = (x: number, y: number) => {
     let ex = 0, ey = 0
     for (const c of [c1, c2]) {
       const dx = x - c.x, dy = y - c.y
-      const r2 = dx*dx + dy*dy + 0.001
+      const r2 = dx * dx + dy * dy + 0.001
       const r = Math.sqrt(r2)
       ex += c.q * dx / (r2 * r)
       ey += c.q * dy / (r2 * r)
@@ -1123,14 +1123,14 @@ function drawRLC(ctx: CanvasRenderingContext2D, W: number, H: number, t: number,
   // ось
   ctx.strokeStyle = COL.faint
   ctx.lineWidth = 0.6
-  ctx.beginPath(); ctx.moveTo(0, H/2); ctx.lineTo(halfW, H/2); ctx.stroke()
+  ctx.beginPath(); ctx.moveTo(0, H / 2); ctx.lineTo(halfW, H / 2); ctx.stroke()
 
   ctx.strokeStyle = COL.accent
   ctx.lineWidth = 1.6
   ctx.beginPath()
   st.history.forEach((pt, idx) => {
     const x = (idx / st.history.length) * halfW
-    const y = H/2 - pt.i * (H * 0.3)
+    const y = H / 2 - pt.i * (H * 0.3)
     if (idx === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
   })
   ctx.stroke()
@@ -1138,7 +1138,7 @@ function drawRLC(ctx: CanvasRenderingContext2D, W: number, H: number, t: number,
   ctx.beginPath()
   st.history.forEach((pt, idx) => {
     const x = (idx / st.history.length) * halfW
-    const y = H/2 - pt.q * (H * 0.3)
+    const y = H / 2 - pt.q * (H * 0.3)
     if (idx === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
   })
   ctx.stroke()
@@ -1151,8 +1151,8 @@ function drawRLC(ctx: CanvasRenderingContext2D, W: number, H: number, t: number,
 
   // Правая половина: фазовый портрет I-Q
   ctx.save()
-  ctx.translate(W/2 + 6, 0)
-  const halfW2 = W/2 - 6
+  ctx.translate(W / 2 + 6, 0)
+  const halfW2 = W / 2 - 6
   const m2 = makeMap(halfW2, H, -1.5, 1.5, -1.5, 1.5, 16)
   drawAxes(ctx, m2, -1.5, 1.5, -1.5, 1.5)
   ctx.strokeStyle = COL.accent
@@ -1393,7 +1393,7 @@ function drawPendulum(ctx: CanvasRenderingContext2D, W: number, H: number, t: nu
   ctx.restore()
 
   ctx.fillStyle = COL.faint; ctx.font = '11px JetBrains Mono'
-  ctx.fillText(`L = ${L}, θ₀ = ${(theta0 * 180/Math.PI).toFixed(0)}°,  β = ${beta.toFixed(3)}`, 16, H - 8)
+  ctx.fillText(`L = ${L}, θ₀ = ${(theta0 * 180 / Math.PI).toFixed(0)}°,  β = ${beta.toFixed(3)}`, 16, H - 8)
 }
 
 // ───────────────────────────── 19. Замедление времени ─────────────────────────────
@@ -1411,11 +1411,11 @@ function drawTimeDilation(ctx: CanvasRenderingContext2D, W: number, H: number, t
     ctx.strokeStyle = COL.ink
     ctx.lineWidth = 1.5
     // зеркала
-    ctx.beginPath(); ctx.moveTo(cx - w/2, cy - h/2); ctx.lineTo(cx + w/2, cy - h/2); ctx.stroke()
-    ctx.beginPath(); ctx.moveTo(cx - w/2, cy + h/2); ctx.lineTo(cx + w/2, cy + h/2); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(cx - w / 2, cy - h / 2); ctx.lineTo(cx + w / 2, cy - h / 2); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(cx - w / 2, cy + h / 2); ctx.lineTo(cx + w / 2, cy + h / 2); ctx.stroke()
     // фотон
     const phase = (t / tickPeriod) % 1
-    const py = cy - h/2 + (phase < 0.5 ? phase * 2 : 2 - phase * 2) * h
+    const py = cy - h / 2 + (phase < 0.5 ? phase * 2 : 2 - phase * 2) * h
     ctx.fillStyle = COL.gold
     ctx.shadowBlur = 10; ctx.shadowColor = COL.gold
     ctx.beginPath(); ctx.arc(cx, py, 5, 0, 6.283); ctx.fill()
@@ -1423,7 +1423,7 @@ function drawTimeDilation(ctx: CanvasRenderingContext2D, W: number, H: number, t
     // подпись
     ctx.fillStyle = COL.ink
     ctx.font = '11px JetBrains Mono'; ctx.textAlign = 'center'
-    ctx.fillText(label, cx, cy + h/2 + 24)
+    ctx.fillText(label, cx, cy + h / 2 + 24)
     ctx.textAlign = 'left'
   }
 
@@ -1467,18 +1467,18 @@ function drawQuantumWell(ctx: CanvasRenderingContext2D, W: number, H: number, t:
   if (finite) {
     ctx.beginPath()
     ctx.moveTo(m.x(xMin), m.y(U0))
-    ctx.lineTo(m.x(-L/2), m.y(U0))
-    ctx.lineTo(m.x(-L/2), m.y(0))
-    ctx.lineTo(m.x(L/2), m.y(0))
-    ctx.lineTo(m.x(L/2), m.y(U0))
+    ctx.lineTo(m.x(-L / 2), m.y(U0))
+    ctx.lineTo(m.x(-L / 2), m.y(0))
+    ctx.lineTo(m.x(L / 2), m.y(0))
+    ctx.lineTo(m.x(L / 2), m.y(U0))
     ctx.lineTo(m.x(xMax), m.y(U0))
     ctx.stroke()
   } else {
     ctx.beginPath()
-    ctx.moveTo(m.x(-L/2), m.y(yMax))
-    ctx.lineTo(m.x(-L/2), m.y(0))
-    ctx.lineTo(m.x(L/2), m.y(0))
-    ctx.lineTo(m.x(L/2), m.y(yMax))
+    ctx.moveTo(m.x(-L / 2), m.y(yMax))
+    ctx.lineTo(m.x(-L / 2), m.y(0))
+    ctx.lineTo(m.x(L / 2), m.y(0))
+    ctx.lineTo(m.x(L / 2), m.y(yMax))
     ctx.stroke()
   }
 
@@ -1492,8 +1492,8 @@ function drawQuantumWell(ctx: CanvasRenderingContext2D, W: number, H: number, t:
     ctx.lineWidth = isCurrent ? 1.6 : 0.8
     ctx.setLineDash(isCurrent ? [] : [3, 3])
     ctx.beginPath()
-    ctx.moveTo(m.x(-L/2), m.y(E))
-    ctx.lineTo(m.x(L/2), m.y(E))
+    ctx.moveTo(m.x(-L / 2), m.y(E))
+    ctx.lineTo(m.x(L / 2), m.y(E))
     ctx.stroke()
     ctx.setLineDash([])
   }
@@ -1502,14 +1502,14 @@ function drawQuantumWell(ctx: CanvasRenderingContext2D, W: number, H: number, t:
   const En = Eunit * n * n / (L * L)
   // ψ_n(x) = √(2/L) sin(nπ(x + L/2)/L) внутри ямы; снаружи (для конечной) экспоненциальный спад
   const psi2 = (x: number) => {
-    if (x < -L/2 || x > L/2) {
+    if (x < -L / 2 || x > L / 2) {
       if (!finite) return 0
       const kappa = Math.sqrt(Math.max(0.1, U0 - En)) * 0.6
-      const dist = x < -L/2 ? -L/2 - x : x - L/2
+      const dist = x < -L / 2 ? -L / 2 - x : x - L / 2
       const edge = (2 / L) * Math.pow(Math.sin(n * Math.PI), 2)
       return Math.pow(2 / L, 0.5) * 0.5 * Math.exp(-2 * kappa * dist)
     }
-    const v = Math.sin(n * Math.PI * (x + L/2) / L)
+    const v = Math.sin(n * Math.PI * (x + L / 2) / L)
     return (2 / L) * v * v
   }
 
@@ -1534,11 +1534,11 @@ function drawQuantumWell(ctx: CanvasRenderingContext2D, W: number, H: number, t:
   for (let xp = 0; xp <= W; xp++) {
     const x = xMin + (xp / W) * (xMax - xMin)
     let psi = 0
-    if (x >= -L/2 && x <= L/2) {
-      psi = Math.sqrt(2 / L) * Math.sin(n * Math.PI * (x + L/2) / L) * Math.cos(t * 1.5)
+    if (x >= -L / 2 && x <= L / 2) {
+      psi = Math.sqrt(2 / L) * Math.sin(n * Math.PI * (x + L / 2) / L) * Math.cos(t * 1.5)
     } else if (finite) {
       const kappa = Math.sqrt(Math.max(0.1, U0 - En)) * 0.6
-      const dist = x < -L/2 ? -L/2 - x : x - L/2
+      const dist = x < -L / 2 ? -L / 2 - x : x - L / 2
       psi = Math.sqrt(2 / L) * 0.7 * Math.exp(-kappa * dist) * Math.cos(t * 1.5)
     }
     const yPlot = En + psi * 4
@@ -1555,26 +1555,26 @@ function drawQuantumWell(ctx: CanvasRenderingContext2D, W: number, H: number, t:
 // ───────────────────────────── Диспетчер ─────────────────────────────
 
 const RENDERERS: Record<AnimType, (ctx: CanvasRenderingContext2D, W: number, H: number, t: number, p: any) => void> = {
-  'function-derivative':    drawFunctionDerivative,
-  'linear-transform':       drawLinearTransform,
-  'fourier-series':         drawFourier,
-  'gradient-field':         drawGradientField,
-  'complex-power':          drawComplexPower,
-  'phase-portrait':         drawPhasePortrait,
-  'newton-method':          drawNewton,
-  'monte-carlo-integral':   drawMonteCarlo,
-  'vector-field-curl':      drawVectorFieldCurl,
-  'least-squares':          drawLeastSquares,
-  'projectile':             drawProjectile,
-  'kepler-orbit':           drawKepler,
-  'two-source-interference':drawInterference,
-  'electric-field':         drawElectric,
-  'rlc-circuit':            drawRLC,
-  'maxwell-distribution':   drawMaxwell,
-  'slit-diffraction':       drawDiffraction,
-  'pendulum':               drawPendulum,
-  'time-dilation':          drawTimeDilation,
-  'quantum-well':           drawQuantumWell,
+  'function-derivative': drawFunctionDerivative,
+  'linear-transform': drawLinearTransform,
+  'fourier-series': drawFourier,
+  'gradient-field': drawGradientField,
+  'complex-power': drawComplexPower,
+  'phase-portrait': drawPhasePortrait,
+  'newton-method': drawNewton,
+  'monte-carlo-integral': drawMonteCarlo,
+  'vector-field-curl': drawVectorFieldCurl,
+  'least-squares': drawLeastSquares,
+  'projectile': drawProjectile,
+  'kepler-orbit': drawKepler,
+  'two-source-interference': drawInterference,
+  'electric-field': drawElectric,
+  'rlc-circuit': drawRLC,
+  'maxwell-distribution': drawMaxwell,
+  'slit-diffraction': drawDiffraction,
+  'pendulum': drawPendulum,
+  'time-dilation': drawTimeDilation,
+  'quantum-well': drawQuantumWell,
 }
 
 export function renderAnim(type: AnimType, ctx: CanvasRenderingContext2D, W: number, H: number, t: number, params: any) {

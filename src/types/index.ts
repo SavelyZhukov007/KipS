@@ -115,14 +115,14 @@ export interface BlockMeta {
 }
 
 export const BLOCK_REGISTRY: BlockMeta[] = [
-  { type: 'header',    label: 'Заголовок',    glyph: '¶',  hint: 'Раздел / подраздел' },
-  { type: 'theory',    label: 'Текст',        glyph: 'A',  hint: 'Параграф теории, поддерживает разметку' },
-  { type: 'python',    label: 'Python',       glyph: '{ }', hint: 'Блок исходного кода' },
-  { type: 'image',     label: 'Изображение',  glyph: '◫',  hint: 'Иллюстрация с подписью' },
-  { type: 'animation', label: 'Визуализация', glyph: '∿',  hint: '20 готовых анимаций по матем. и физике' },
-  { type: 'exercise',  label: 'Задача',       glyph: '?',  hint: 'Упражнение со скрытым решением' },
-  { type: 'quote',     label: 'Цитата',       glyph: '“',  hint: 'Эпиграф или цитата автора' },
-  { type: 'divider',   label: 'Разделитель',  glyph: '✦',  hint: 'Орнаментальная черта' },
+  { type: 'header', label: 'Заголовок', glyph: '¶', hint: 'Раздел / подраздел' },
+  { type: 'theory', label: 'Текст', glyph: 'A', hint: 'Параграф теории, поддерживает разметку' },
+  { type: 'python', label: 'Python', glyph: '{ }', hint: 'Блок исходного кода' },
+  { type: 'image', label: 'Изображение', glyph: '◫', hint: 'Иллюстрация с подписью' },
+  { type: 'animation', label: 'Визуализация', glyph: '∿', hint: '20 готовых анимаций по матем. и физике' },
+  { type: 'exercise', label: 'Задача', glyph: '?', hint: 'Упражнение со скрытым решением' },
+  { type: 'quote', label: 'Цитата', glyph: '“', hint: 'Эпиграф или цитата автора' },
+  { type: 'divider', label: 'Разделитель', glyph: '✦', hint: 'Орнаментальная черта' },
 ]
 
 // ───────────────────────────── Анимации (20 шт) ─────────────────────────────
@@ -181,14 +181,16 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Функция и её производная',
     description: 'График f(x) и касательная в выбранной точке',
     params: [
-      { key: 'fn', label: 'Функция', kind: 'select', default: 'sin', options: [
-        { value: 'sin', label: 'sin x' }, { value: 'cos', label: 'cos x' },
-        { value: 'pow', label: 'xⁿ' },    { value: 'exp', label: 'eˣ' },
-        { value: 'ln',  label: 'ln x' },  { value: 'poly', label: 'a·x³+b·x' },
-      ]},
+      {
+        key: 'fn', label: 'Функция', kind: 'select', default: 'sin', options: [
+          { value: 'sin', label: 'sin x' }, { value: 'cos', label: 'cos x' },
+          { value: 'pow', label: 'xⁿ' }, { value: 'exp', label: 'eˣ' },
+          { value: 'ln', label: 'ln x' }, { value: 'poly', label: 'a·x³+b·x' },
+        ]
+      },
       { key: 'x0', label: 'Точка касания x₀', kind: 'number', min: -3, max: 3, step: 0.05, default: 0.5 },
-      { key: 'a',  label: 'Коэф. a', kind: 'number', min: -3, max: 3, step: 0.1, default: 1 },
-      { key: 'b',  label: 'Коэф. b', kind: 'number', min: -3, max: 3, step: 0.1, default: 1 },
+      { key: 'a', label: 'Коэф. a', kind: 'number', min: -3, max: 3, step: 0.1, default: 1 },
+      { key: 'b', label: 'Коэф. b', kind: 'number', min: -3, max: 3, step: 0.1, default: 1 },
       { key: 'showSecant', label: 'Показать секущую', kind: 'boolean', default: true },
     ],
   },
@@ -211,12 +213,14 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Ряд Фурье',
     description: 'Приближение прямоугольного сигнала суммой гармоник',
     params: [
-      { key: 'N',     label: 'Число гармоник N', kind: 'number', min: 1, max: 50, step: 1, default: 9 },
-      { key: 'shape', label: 'Целевой сигнал', kind: 'select', default: 'square', options: [
-        { value: 'square', label: 'Прямоугольный' },
-        { value: 'triangle', label: 'Треугольный' },
-        { value: 'sawtooth', label: 'Пила' },
-      ]},
+      { key: 'N', label: 'Число гармоник N', kind: 'number', min: 1, max: 50, step: 1, default: 9 },
+      {
+        key: 'shape', label: 'Целевой сигнал', kind: 'select', default: 'square', options: [
+          { value: 'square', label: 'Прямоугольный' },
+          { value: 'triangle', label: 'Треугольный' },
+          { value: 'sawtooth', label: 'Пила' },
+        ]
+      },
       { key: 'showTarget', label: 'Показать целевой сигнал', kind: 'boolean', default: true },
     ],
   },
@@ -226,13 +230,15 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Градиент скалярного поля',
     description: 'Линии уровня и векторы градиента',
     params: [
-      { key: 'fn', label: 'Поле', kind: 'select', default: 'paraboloid', options: [
-        { value: 'paraboloid', label: 'x² + y²' },
-        { value: 'saddle',     label: 'x² − y²' },
-        { value: 'sincos',     label: 'sin x · cos y' },
-      ]},
+      {
+        key: 'fn', label: 'Поле', kind: 'select', default: 'paraboloid', options: [
+          { value: 'paraboloid', label: 'x² + y²' },
+          { value: 'saddle', label: 'x² − y²' },
+          { value: 'sincos', label: 'sin x · cos y' },
+        ]
+      },
       { key: 'density', label: 'Плотность векторов', kind: 'number', min: 6, max: 20, step: 1, default: 12 },
-      { key: 'levels',  label: 'Кол-во линий уровня', kind: 'number', min: 4, max: 20, step: 1, default: 10 },
+      { key: 'levels', label: 'Кол-во линий уровня', kind: 'number', min: 4, max: 20, step: 1, default: 10 },
     ],
   },
   {
@@ -241,8 +247,8 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Возведение комплексного числа в степень',
     description: 'Окружность переходит в w = zⁿ',
     params: [
-      { key: 'n',      label: 'Показатель n', kind: 'number', min: -3, max: 5, step: 0.1, default: 2 },
-      { key: 'radius', label: 'Радиус |z|',   kind: 'number', min: 0.3, max: 1.6, step: 0.05, default: 1 },
+      { key: 'n', label: 'Показатель n', kind: 'number', min: -3, max: 5, step: 0.1, default: 2 },
+      { key: 'radius', label: 'Радиус |z|', kind: 'number', min: 0.3, max: 1.6, step: 0.05, default: 1 },
       { key: 'rotate', label: 'Анимировать поворот', kind: 'boolean', default: true },
     ],
   },
@@ -264,12 +270,14 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Метод Ньютона',
     description: 'Лесенка приближений к корню f(x) = 0',
     params: [
-      { key: 'fn', label: 'Функция', kind: 'select', default: 'cubic', options: [
-        { value: 'cubic',  label: 'x³ − 2x − 1' },
-        { value: 'quad',   label: 'x² − 2' },
-        { value: 'sin',    label: 'sin x' },
-      ]},
-      { key: 'x0',    label: 'Стартовая x₀', kind: 'number', min: -3, max: 3, step: 0.05, default: 1.6 },
+      {
+        key: 'fn', label: 'Функция', kind: 'select', default: 'cubic', options: [
+          { value: 'cubic', label: 'x³ − 2x − 1' },
+          { value: 'quad', label: 'x² − 2' },
+          { value: 'sin', label: 'sin x' },
+        ]
+      },
+      { key: 'x0', label: 'Стартовая x₀', kind: 'number', min: -3, max: 3, step: 0.05, default: 1.6 },
       { key: 'iters', label: 'Число итераций', kind: 'number', min: 1, max: 12, step: 1, default: 6 },
     ],
   },
@@ -279,11 +287,13 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Метод Монте-Карло',
     description: 'Оценка площади под кривой случайными бросками',
     params: [
-      { key: 'fn', label: 'Функция', kind: 'select', default: 'bell', options: [
-        { value: 'bell',   label: 'exp(−x²)' },
-        { value: 'sin',    label: '|sin x|' },
-        { value: 'parab',  label: '1 − x²' },
-      ]},
+      {
+        key: 'fn', label: 'Функция', kind: 'select', default: 'bell', options: [
+          { value: 'bell', label: 'exp(−x²)' },
+          { value: 'sin', label: '|sin x|' },
+          { value: 'parab', label: '1 − x²' },
+        ]
+      },
       { key: 'samples', label: 'Число точек', kind: 'number', min: 50, max: 4000, step: 50, default: 800 },
     ],
   },
@@ -293,11 +303,13 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Векторное поле и ротор',
     description: 'Линии тока подкрашены модулем ротора',
     params: [
-      { key: 'kind', label: 'Тип поля', kind: 'select', default: 'vortex', options: [
-        { value: 'vortex', label: 'Вихрь (−y, x)' },
-        { value: 'sink',   label: 'Сток (x, y)' },
-        { value: 'shear',  label: 'Сдвиг (y, 0)' },
-      ]},
+      {
+        key: 'kind', label: 'Тип поля', kind: 'select', default: 'vortex', options: [
+          { value: 'vortex', label: 'Вихрь (−y, x)' },
+          { value: 'sink', label: 'Сток (x, y)' },
+          { value: 'shear', label: 'Сдвиг (y, 0)' },
+        ]
+      },
       { key: 'density', label: 'Плотность', kind: 'number', min: 8, max: 24, step: 1, default: 14 },
     ],
   },
@@ -307,9 +319,9 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Метод наименьших квадратов',
     description: 'Облако точек, регрессия и сумма квадратов ошибок',
     params: [
-      { key: 'noise',  label: 'Шум σ',          kind: 'number', min: 0, max: 1.5, step: 0.05, default: 0.5 },
+      { key: 'noise', label: 'Шум σ', kind: 'number', min: 0, max: 1.5, step: 0.05, default: 0.5 },
       { key: 'degree', label: 'Степень полинома', kind: 'number', min: 1, max: 5, step: 1, default: 1 },
-      { key: 'points', label: 'Кол-во точек',     kind: 'number', min: 10, max: 80, step: 1, default: 30 },
+      { key: 'points', label: 'Кол-во точек', kind: 'number', min: 10, max: 80, step: 1, default: 30 },
     ],
   },
   // ── Физика ────────────────────────────────────────────────────────
@@ -319,12 +331,14 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Бросок под углом к горизонту',
     description: 'Траектория, векторы скорости и ускорения',
     params: [
-      { key: 'v0',    label: 'Начальная скорость v₀ (м/с)', kind: 'number', min: 5, max: 60, step: 1, default: 25 },
+      { key: 'v0', label: 'Начальная скорость v₀ (м/с)', kind: 'number', min: 5, max: 60, step: 1, default: 25 },
       { key: 'angle', label: 'Угол α (°)', kind: 'number', min: 5, max: 85, step: 1, default: 45 },
-      { key: 'g',     label: 'Гравитация', kind: 'select', default: 'earth', options: [
-        { value: 'earth', label: 'Земля (9.8)' }, { value: 'moon', label: 'Луна (1.6)' }, { value: 'mars', label: 'Марс (3.7)' },
-      ]},
-      { key: 'drag',  label: 'Сопротивление воздуха', kind: 'number', min: 0, max: 0.05, step: 0.002, default: 0 },
+      {
+        key: 'g', label: 'Гравитация', kind: 'select', default: 'earth', options: [
+          { value: 'earth', label: 'Земля (9.8)' }, { value: 'moon', label: 'Луна (1.6)' }, { value: 'mars', label: 'Марс (3.7)' },
+        ]
+      },
+      { key: 'drag', label: 'Сопротивление воздуха', kind: 'number', min: 0, max: 0.05, step: 0.002, default: 0 },
     ],
   },
   {
@@ -334,8 +348,8 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     description: 'Орбита спутника, заметаемая площадь',
     params: [
       { key: 'mass', label: 'Масса центра M', kind: 'number', min: 0.5, max: 4, step: 0.05, default: 1.4 },
-      { key: 'r0',   label: 'Начальное расстояние', kind: 'number', min: 0.4, max: 1.6, step: 0.02, default: 0.9 },
-      { key: 'v0',   label: 'Начальная скорость v', kind: 'number', min: 0.4, max: 1.6, step: 0.02, default: 1.1 },
+      { key: 'r0', label: 'Начальное расстояние', kind: 'number', min: 0.4, max: 1.6, step: 0.02, default: 0.9 },
+      { key: 'v0', label: 'Начальная скорость v', kind: 'number', min: 0.4, max: 1.6, step: 0.02, default: 1.1 },
       { key: 'showArea', label: 'Заметаемая площадь', kind: 'boolean', default: true },
     ],
   },
@@ -346,8 +360,8 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     description: 'Карта интенсивности волн на поверхности воды',
     params: [
       { key: 'wavelength', label: 'Длина волны λ', kind: 'number', min: 0.05, max: 0.4, step: 0.005, default: 0.16 },
-      { key: 'distance',   label: 'Расст. между источниками d', kind: 'number', min: 0.1, max: 0.7, step: 0.01, default: 0.4 },
-      { key: 'phase',      label: 'Разность фаз Δφ', kind: 'number', min: 0, max: 6.28, step: 0.05, default: 0 },
+      { key: 'distance', label: 'Расст. между источниками d', kind: 'number', min: 0.1, max: 0.7, step: 0.01, default: 0.4 },
+      { key: 'phase', label: 'Разность фаз Δφ', kind: 'number', min: 0, max: 6.28, step: 0.05, default: 0 },
     ],
   },
   {
@@ -356,8 +370,8 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Электрическое поле зарядов',
     description: 'Линии E и эквипотенциали для системы точечных зарядов',
     params: [
-      { key: 'q1',  label: 'Заряд q₁', kind: 'number', min: -3, max: 3, step: 0.1, default: 1 },
-      { key: 'q2',  label: 'Заряд q₂', kind: 'number', min: -3, max: 3, step: 0.1, default: -1 },
+      { key: 'q1', label: 'Заряд q₁', kind: 'number', min: -3, max: 3, step: 0.1, default: 1 },
+      { key: 'q2', label: 'Заряд q₂', kind: 'number', min: -3, max: 3, step: 0.1, default: -1 },
       { key: 'sep', label: 'Расстояние', kind: 'number', min: 0.2, max: 1.4, step: 0.02, default: 0.7 },
       { key: 'showPotential', label: 'Эквипотенциальные линии', kind: 'boolean', default: true },
     ],
@@ -369,9 +383,9 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     description: 'Осциллограммы тока и напряжения, фазовый портрет',
     params: [
       { key: 'L', label: 'Индуктивность L', kind: 'number', min: 0.1, max: 4, step: 0.05, default: 1 },
-      { key: 'C', label: 'Ёмкость C',       kind: 'number', min: 0.1, max: 4, step: 0.05, default: 1 },
-      { key: 'R', label: 'Сопротивление R', kind: 'number', min: 0,   max: 3, step: 0.05, default: 0.3 },
-      { key: 'drive', label: 'Внеш. ЭДС',   kind: 'number', min: 0,   max: 2, step: 0.05, default: 0 },
+      { key: 'C', label: 'Ёмкость C', kind: 'number', min: 0.1, max: 4, step: 0.05, default: 1 },
+      { key: 'R', label: 'Сопротивление R', kind: 'number', min: 0, max: 3, step: 0.05, default: 0.3 },
+      { key: 'drive', label: 'Внеш. ЭДС', kind: 'number', min: 0, max: 2, step: 0.05, default: 0 },
     ],
   },
   {
@@ -380,10 +394,12 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Распределение Максвелла',
     description: 'Гистограмма скоростей частиц газа vs теория',
     params: [
-      { key: 'T',   label: 'Температура T (K)', kind: 'number', min: 100, max: 1500, step: 25, default: 300 },
-      { key: 'gas', label: 'Газ', kind: 'select', default: 'N2', options: [
-        { value: 'He', label: 'Гелий (4)' }, { value: 'N2', label: 'Азот (28)' }, { value: 'Xe', label: 'Ксенон (131)' },
-      ]},
+      { key: 'T', label: 'Температура T (K)', kind: 'number', min: 100, max: 1500, step: 25, default: 300 },
+      {
+        key: 'gas', label: 'Газ', kind: 'select', default: 'N2', options: [
+          { value: 'He', label: 'Гелий (4)' }, { value: 'N2', label: 'Азот (28)' }, { value: 'Xe', label: 'Ксенон (131)' },
+        ]
+      },
       { key: 'showMarkers', label: 'Отметить v_p, v_avg, v_rms', kind: 'boolean', default: true },
     ],
   },
@@ -393,9 +409,9 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Дифракция Фраунгофера',
     description: 'Интенсивность на экране для N щелей',
     params: [
-      { key: 'a',  label: 'Ширина щели a',    kind: 'number', min: 0.5, max: 4,   step: 0.05, default: 1.2 },
-      { key: 'lam', label: 'Длина волны λ',   kind: 'number', min: 0.3, max: 1.5, step: 0.02, default: 0.6 },
-      { key: 'N',   label: 'Число щелей',     kind: 'number', min: 1, max: 8, step: 1, default: 1 },
+      { key: 'a', label: 'Ширина щели a', kind: 'number', min: 0.5, max: 4, step: 0.05, default: 1.2 },
+      { key: 'lam', label: 'Длина волны λ', kind: 'number', min: 0.3, max: 1.5, step: 0.02, default: 0.6 },
+      { key: 'N', label: 'Число щелей', kind: 'number', min: 1, max: 8, step: 1, default: 1 },
     ],
   },
   {
@@ -404,9 +420,9 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Маятник',
     description: 'Раскачивание и фазовый портрет (угол — скорость)',
     params: [
-      { key: 'L',     label: 'Длина L (м)', kind: 'number', min: 0.3, max: 3, step: 0.05, default: 1 },
+      { key: 'L', label: 'Длина L (м)', kind: 'number', min: 0.3, max: 3, step: 0.05, default: 1 },
       { key: 'theta0', label: 'Нач. угол θ₀ (°)', kind: 'number', min: 5, max: 170, step: 1, default: 35 },
-      { key: 'beta',  label: 'Затухание β', kind: 'number', min: 0, max: 0.5, step: 0.005, default: 0.02 },
+      { key: 'beta', label: 'Затухание β', kind: 'number', min: 0, max: 0.5, step: 0.005, default: 0.02 },
       { key: 'drive', label: 'Вынуждающая сила', kind: 'number', min: 0, max: 1.5, step: 0.05, default: 0 },
     ],
   },
@@ -416,7 +432,7 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Замедление времени',
     description: 'Световые часы в двух системах отсчёта',
     params: [
-      { key: 'beta',  label: 'β = v / c', kind: 'number', min: 0, max: 0.99, step: 0.01, default: 0.6 },
+      { key: 'beta', label: 'β = v / c', kind: 'number', min: 0, max: 0.99, step: 0.01, default: 0.6 },
       { key: 'showLengthContraction', label: 'Лоренцево сокращение', kind: 'boolean', default: true },
     ],
   },
@@ -426,16 +442,16 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Квантовая яма',
     description: 'Уровни энергии и |ψ|² частицы в яме',
     params: [
-      { key: 'L',  label: 'Ширина L', kind: 'number', min: 0.4, max: 2, step: 0.05, default: 1 },
+      { key: 'L', label: 'Ширина L', kind: 'number', min: 0.4, max: 2, step: 0.05, default: 1 },
       { key: 'U0', label: 'Глубина U₀', kind: 'number', min: 5, max: 100, step: 1, default: 40 },
-      { key: 'n',  label: 'Уровень n',  kind: 'number', min: 1, max: 6, step: 1, default: 1 },
+      { key: 'n', label: 'Уровень n', kind: 'number', min: 1, max: 6, step: 1, default: 1 },
       { key: 'finite', label: 'Конечная яма (туннелирование)', kind: 'boolean', default: true },
     ],
   },
 ]
 
 export const ANIMS_BY_CATEGORY = {
-  math:    ANIM_REGISTRY.filter(a => a.category === 'math'),
+  math: ANIM_REGISTRY.filter(a => a.category === 'math'),
   physics: ANIM_REGISTRY.filter(a => a.category === 'physics'),
 }
 

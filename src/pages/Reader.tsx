@@ -101,7 +101,7 @@ export function Reader({ bookId, navigate }: Props) {
       {/* Угловые декорации */}
       <div style={{ position: 'fixed', top: 16, left: 20, color: 'rgba(245,239,225,0.5)', fontFamily: 'var(--font-ui)', fontSize: 11, letterSpacing: '0.1em' }}>
         <button onClick={() => navigate({ name: 'constructor', bookId })}
-                style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', font: 'inherit' }}>
+          style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', font: 'inherit' }}>
           ← Конструктор
         </button>
       </div>
@@ -150,16 +150,16 @@ export function Reader({ bookId, navigate }: Props) {
             fontStyle: 'italic',
           }}>
             {page?.kind === 'cover' ? '' :
-             page?.kind === 'toc'   ? '— Оглавление —' :
-             page?.kind === 'note'  ? `— ${page.globalIndex} —` : ''}
+              page?.kind === 'toc' ? '— Оглавление —' :
+                page?.kind === 'note' ? `— ${page.globalIndex} —` : ''}
           </div>
         </div>
 
         {/* Контролы листания — слева/справа */}
         <button onClick={() => flip('prev')} disabled={pageIdx === 0}
-                style={{ ...flipBtn, left: -64 }} title="Предыдущая (←)">‹</button>
+          style={{ ...flipBtn, left: -64 }} title="Предыдущая (←)">‹</button>
         <button onClick={() => flip('next')} disabled={pageIdx >= pages.length - 1}
-                style={{ ...flipBtn, right: -64 }} title="Следующая (→)">›</button>
+          style={{ ...flipBtn, right: -64 }} title="Следующая (→)">›</button>
       </div>
 
       {/* Прогресс внизу */}
@@ -259,13 +259,13 @@ function TocPage({ book, pages, onJump }: {
               const globalIdx = (pages[idx] as Page).globalIndex
               return (
                 <div key={n.id}
-                     onClick={() => onJump(idx)}
-                     style={{
-                       display: 'flex', alignItems: 'baseline', gap: 6, padding: '3px 0 3px 24px',
-                       fontSize: 14, color: 'var(--ink)', cursor: 'pointer',
-                     }}
-                     onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}
-                     onMouseLeave={e => e.currentTarget.style.color = 'var(--ink)'}>
+                  onClick={() => onJump(idx)}
+                  style={{
+                    display: 'flex', alignItems: 'baseline', gap: 6, padding: '3px 0 3px 24px',
+                    fontSize: 14, color: 'var(--ink)', cursor: 'pointer',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'var(--ink)'}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>§{ni + 1}.</span>
                   <span style={{ flex: 1 }}>{n.title}</span>
                   <span style={{
@@ -392,13 +392,13 @@ function BlockReader({ block, index }: { block: Block; index: number }) {
       return (
         <figure style={{ margin: '24px 0', textAlign: 'center' }}>
           <img src={block.src} alt={block.alt}
-               style={{
-                 maxWidth: '100%', maxHeight: 420,
-                 objectFit: block.fit ?? 'contain',
-                 borderRadius: block.borderRadius ?? 4,
-                 filter: `brightness(${block.brightness ?? 100}%) contrast(${block.contrast ?? 100}%)`,
-                 boxShadow: '0 4px 12px rgba(33,26,18,0.15)',
-               }} />
+            style={{
+              maxWidth: '100%', maxHeight: 420,
+              objectFit: block.fit ?? 'contain',
+              borderRadius: block.borderRadius ?? 4,
+              filter: `brightness(${block.brightness ?? 100}%) contrast(${block.contrast ?? 100}%)`,
+              boxShadow: '0 4px 12px rgba(33,26,18,0.15)',
+            }} />
           {block.caption && (
             <figcaption style={{
               fontFamily: 'var(--font-serif-body)', fontStyle: 'italic',

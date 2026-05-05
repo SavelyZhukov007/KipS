@@ -25,14 +25,14 @@ function uid() {
 function newBlock(type: BlockType): Block {
   const id = uid()
   switch (type) {
-    case 'header':    return { id, type, content: 'Новый заголовок', level: 2 } as HeaderBlock
-    case 'theory':    return { id, type, content: 'Текст параграфа…', highlight: false } as TheoryBlock
-    case 'python':    return { id, type, content: '# Пример кода\nprint("hello")', title: 'Листинг', description: '' } as PythonBlock
-    case 'image':     return { id, type, src: '', caption: '', alt: '', fit: 'contain', borderRadius: 4, brightness: 100, contrast: 100 } as ImageBlock
+    case 'header': return { id, type, content: 'Новый заголовок', level: 2 } as HeaderBlock
+    case 'theory': return { id, type, content: 'Текст параграфа…', highlight: false } as TheoryBlock
+    case 'python': return { id, type, content: '# Пример кода\nprint("hello")', title: 'Листинг', description: '' } as PythonBlock
+    case 'image': return { id, type, src: '', caption: '', alt: '', fit: 'contain', borderRadius: 4, brightness: 100, contrast: 100 } as ImageBlock
     case 'animation': return { id, type, animType: 'function-derivative', params: defaultAnimParams('function-derivative'), caption: '' } as AnimationBlock
-    case 'exercise':  return { id, type, question: 'Условие задачи…', answer: '', explanation: '', number: '' } as ExerciseBlock
-    case 'quote':     return { id, type, content: 'Цитата…', author: '' } as QuoteBlock
-    case 'divider':   return { id, type, style: 'fancy' } as DividerBlock
+    case 'exercise': return { id, type, question: 'Условие задачи…', answer: '', explanation: '', number: '' } as ExerciseBlock
+    case 'quote': return { id, type, content: 'Цитата…', author: '' } as QuoteBlock
+    case 'divider': return { id, type, style: 'fancy' } as DividerBlock
   }
 }
 
@@ -83,7 +83,7 @@ export function Constructor({ bookId, navigate }: Props) {
       {/* ═══ MAIN ═══ */}
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <TopBar book={book} note={note} chapter={chapter}
-                onPreview={() => navigate({ name: 'reader', bookId })} />
+          onPreview={() => navigate({ name: 'reader', bookId })} />
         {note && chapter ? (
           <BlockEditor key={note.id} bookId={bookId} chapterId={chapter.id} note={note} />
         ) : (
@@ -176,9 +176,9 @@ function Sidebar({
             background: 'var(--paper)', border: '1px solid var(--rule)', borderRadius: 4,
             boxShadow: '0 -4px 16px rgba(33,26,18,0.15)', zIndex: 20,
           }}>
-            <ExportItem label="Vite-проект (zip)"      onClick={() => { exportBookVite(book); setExportMenu(false) }} />
-            <ExportItem label="Один HTML-файл"          onClick={() => { exportBookSingleHTML(book); setExportMenu(false) }} />
-            <ExportItem label="Markdown (.md)"          onClick={() => { exportBookMarkdown(book); setExportMenu(false) }} />
+            <ExportItem label="Vite-проект (zip)" onClick={() => { exportBookVite(book); setExportMenu(false) }} />
+            <ExportItem label="Один HTML-файл" onClick={() => { exportBookSingleHTML(book); setExportMenu(false) }} />
+            <ExportItem label="Markdown (.md)" onClick={() => { exportBookMarkdown(book); setExportMenu(false) }} />
             <ExportItem label=".kips.json (для импорта)" onClick={() => { exportBookJSON(book); setExportMenu(false) }} />
           </div>
         )}
@@ -195,8 +195,8 @@ function ExportItem({ label, onClick }: { label: string; onClick: () => void }) 
       fontFamily: 'var(--font-ui)', fontSize: 13, color: 'var(--ink)',
       borderBottom: '1px solid var(--rule)',
     }}
-    onMouseEnter={e => (e.currentTarget.style.background = '#ede4d0')}
-    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+      onMouseEnter={e => (e.currentTarget.style.background = '#ede4d0')}
+      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
       {label}
     </button>
   )
@@ -251,13 +251,13 @@ function ChapterRow({
         <div style={{ display: 'flex', gap: 2 }}>
           <button style={iconBtn} title="Переименовать" onClick={() => setEditing(true)}>✎</button>
           <button style={iconBtn} title="Вверх" disabled={index === 0}
-                  onClick={() => moveChapter(bookId, chapter.id, 'up')}>↑</button>
+            onClick={() => moveChapter(bookId, chapter.id, 'up')}>↑</button>
           <button style={iconBtn} title="Вниз" disabled={index === total - 1}
-                  onClick={() => moveChapter(bookId, chapter.id, 'down')}>↓</button>
+            onClick={() => moveChapter(bookId, chapter.id, 'down')}>↓</button>
           <button style={iconBtn} title="Добавить конспект"
-                  onClick={() => addNote(bookId, chapter.id)}>+</button>
+            onClick={() => addNote(bookId, chapter.id)}>+</button>
           <button style={iconBtn} title="Удалить главу"
-                  onClick={() => { if (confirm(`Удалить главу «${chapter.title}»?`)) deleteChapter(bookId, chapter.id) }}>×</button>
+            onClick={() => { if (confirm(`Удалить главу «${chapter.title}»?`)) deleteChapter(bookId, chapter.id) }}>×</button>
         </div>
       )}
     </div>
@@ -317,11 +317,11 @@ function NoteRow({
         <div style={{ display: 'flex', gap: 2 }} onClick={e => e.stopPropagation()}>
           <button style={iconBtn} title="Переименовать" onClick={() => setEditing(true)}>✎</button>
           <button style={iconBtn} title="Вверх" disabled={index === 0}
-                  onClick={() => moveNote(bookId, chapterId, note.id, 'up')}>↑</button>
+            onClick={() => moveNote(bookId, chapterId, note.id, 'up')}>↑</button>
           <button style={iconBtn} title="Вниз" disabled={index === total - 1}
-                  onClick={() => moveNote(bookId, chapterId, note.id, 'down')}>↓</button>
+            onClick={() => moveNote(bookId, chapterId, note.id, 'down')}>↓</button>
           <button style={iconBtn} title="Удалить"
-                  onClick={() => { if (confirm(`Удалить «${note.title}»?`)) deleteNote(bookId, chapterId, note.id) }}>×</button>
+            onClick={() => { if (confirm(`Удалить «${note.title}»?`)) deleteNote(bookId, chapterId, note.id) }}>×</button>
         </div>
       )}
     </div>
@@ -378,28 +378,28 @@ function TopBar({ book, note, chapter, onPreview }: {
 
       <div style={{ position: 'relative' }}>
         <button onClick={() => setExportSub(s => s === 'note' ? 'none' : 'note')}
-                style={btnGhost} disabled={!note || !chapter}>
+          style={btnGhost} disabled={!note || !chapter}>
           ↓ Экспорт конспекта
         </button>
         {exportSub === 'note' && note && chapter && (
           <ExportSubmenu onClose={() => setExportSub('none')}>
             <ExportItem label=".kips.json" onClick={() => { exportNote(book, chapter.id, note.id, 'json'); setExportSub('none') }} />
-            <ExportItem label="Markdown"    onClick={() => { exportNote(book, chapter.id, note.id, 'md');   setExportSub('none') }} />
-            <ExportItem label="HTML"        onClick={() => { exportNote(book, chapter.id, note.id, 'html'); setExportSub('none') }} />
+            <ExportItem label="Markdown" onClick={() => { exportNote(book, chapter.id, note.id, 'md'); setExportSub('none') }} />
+            <ExportItem label="HTML" onClick={() => { exportNote(book, chapter.id, note.id, 'html'); setExportSub('none') }} />
           </ExportSubmenu>
         )}
       </div>
 
       <div style={{ position: 'relative' }}>
         <button onClick={() => setExportSub(s => s === 'chapter' ? 'none' : 'chapter')}
-                style={btnGhost} disabled={!chapter}>
+          style={btnGhost} disabled={!chapter}>
           ↓ Экспорт главы
         </button>
         {exportSub === 'chapter' && chapter && (
           <ExportSubmenu onClose={() => setExportSub('none')}>
             <ExportItem label=".kips.json" onClick={() => { exportChapter(book, chapter.id, 'json'); setExportSub('none') }} />
-            <ExportItem label="Markdown"    onClick={() => { exportChapter(book, chapter.id, 'md');   setExportSub('none') }} />
-            <ExportItem label="HTML"        onClick={() => { exportChapter(book, chapter.id, 'html'); setExportSub('none') }} />
+            <ExportItem label="Markdown" onClick={() => { exportChapter(book, chapter.id, 'md'); setExportSub('none') }} />
+            <ExportItem label="HTML" onClick={() => { exportChapter(book, chapter.id, 'html'); setExportSub('none') }} />
           </ExportSubmenu>
         )}
       </div>
@@ -572,9 +572,9 @@ function InlineAdder({ onPick }: { onPick: (t: BlockType) => void }) {
           fontSize: 20, color: 'var(--ink-soft)', opacity: 0.4,
           padding: '2px 12px', fontFamily: 'var(--font-serif)',
         }}
-        onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-        onMouseLeave={e => e.currentTarget.style.opacity = '0.4'}
-        title="Добавить блок">
+          onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '0.4'}
+          title="Добавить блок">
           ✦
         </button>
       ) : (
@@ -614,14 +614,14 @@ function BlockTypeMenu({ onPick, onCancel }: { onPick: (t: BlockType) => void; o
 // ═══════════════════════ BLOCK BODY (рендер каждого типа) ═══════════════════════
 function BlockBody({ block, onPatch }: { block: Block; onPatch: (p: Partial<Block>) => void }) {
   switch (block.type) {
-    case 'header':    return <HeaderBody    block={block} onPatch={onPatch} />
-    case 'theory':    return <TheoryBody    block={block} onPatch={onPatch} />
-    case 'python':    return <PythonBody    block={block} onPatch={onPatch} />
-    case 'image':     return <ImageBody     block={block} onPatch={onPatch} />
+    case 'header': return <HeaderBody block={block} onPatch={onPatch} />
+    case 'theory': return <TheoryBody block={block} onPatch={onPatch} />
+    case 'python': return <PythonBody block={block} onPatch={onPatch} />
+    case 'image': return <ImageBody block={block} onPatch={onPatch} />
     case 'animation': return <AnimationBody block={block} onPatch={onPatch} />
-    case 'exercise':  return <ExerciseBody  block={block} onPatch={onPatch} />
-    case 'quote':     return <QuoteBody     block={block} onPatch={onPatch} />
-    case 'divider':   return <DividerBody   block={block} onPatch={onPatch} />
+    case 'exercise': return <ExerciseBody block={block} onPatch={onPatch} />
+    case 'quote': return <QuoteBody block={block} onPatch={onPatch} />
+    case 'divider': return <DividerBody block={block} onPatch={onPatch} />
   }
 }
 
@@ -674,7 +674,7 @@ function TheoryBody({ block, onPatch }: { block: TheoryBlock; onPatch: (p: Parti
       />
       <label style={{ ...lbl, display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
         <input type="checkbox" checked={!!block.highlight}
-               onChange={e => onPatch({ highlight: e.target.checked } as Partial<TheoryBlock>)} />
+          onChange={e => onPatch({ highlight: e.target.checked } as Partial<TheoryBlock>)} />
         Выделить как важный фрагмент
       </label>
     </div>
@@ -731,12 +731,12 @@ function ImageBody({ block, onPatch }: { block: ImageBlock; onPatch: (p: Partial
       {block.src ? (
         <div style={{ textAlign: 'center', padding: 8, border: '1px solid var(--rule)', borderRadius: 3, background: '#ede4d0' }}>
           <img src={block.src} alt={block.alt}
-               style={{
-                 maxWidth: '100%', maxHeight: 360,
-                 objectFit: block.fit ?? 'contain',
-                 borderRadius: block.borderRadius ?? 4,
-                 filter: `brightness(${block.brightness ?? 100}%) contrast(${block.contrast ?? 100}%)`,
-               }} />
+            style={{
+              maxWidth: '100%', maxHeight: 360,
+              objectFit: block.fit ?? 'contain',
+              borderRadius: block.borderRadius ?? 4,
+              filter: `brightness(${block.brightness ?? 100}%) contrast(${block.contrast ?? 100}%)`,
+            }} />
         </div>
       ) : (
         <div onClick={() => fileInput.current?.click()} style={{
@@ -748,7 +748,7 @@ function ImageBody({ block, onPatch }: { block: ImageBlock; onPatch: (p: Partial
         </div>
       )}
       <input ref={fileInput} type="file" accept="image/*" hidden
-             onChange={e => onFile(e.target.files?.[0])} />
+        onChange={e => onFile(e.target.files?.[0])} />
       <input
         value={block.caption}
         onChange={e => onPatch({ caption: e.target.value } as Partial<ImageBlock>)}
@@ -764,7 +764,7 @@ function ImageBody({ block, onPatch }: { block: ImageBlock; onPatch: (p: Partial
         <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           Вписать:
           <select value={block.fit ?? 'contain'} onChange={e => onPatch({ fit: e.target.value as any } as Partial<ImageBlock>)}
-                  style={selectMini}>
+            style={selectMini}>
             <option value="contain">по размеру</option>
             <option value="cover">обрезка</option>
           </select>
@@ -772,11 +772,11 @@ function ImageBody({ block, onPatch }: { block: ImageBlock; onPatch: (p: Partial
         <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           Скругление:
           <input type="range" min={0} max={20} value={block.borderRadius ?? 4}
-                 onChange={e => onPatch({ borderRadius: +e.target.value } as Partial<ImageBlock>)} />
+            onChange={e => onPatch({ borderRadius: +e.target.value } as Partial<ImageBlock>)} />
         </label>
         {block.src && (
           <button onClick={() => onPatch({ src: '' } as Partial<ImageBlock>)}
-                  style={{ ...iconBtn, marginLeft: 'auto' }}>заменить</button>
+            style={{ ...iconBtn, marginLeft: 'auto' }}>заменить</button>
         )}
       </div>
     </div>
@@ -825,8 +825,10 @@ function AnimationBody({ block, onPatch }: { block: AnimationBlock; onPatch: (p:
 
       {meta && (
         <div style={{ padding: '12px 14px', borderTop: '1px solid var(--rule)', background: 'var(--paper)' }}>
-          <div style={{ fontFamily: 'var(--font-ui)', fontSize: 11, color: 'var(--ink-soft)',
-                        textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
+          <div style={{
+            fontFamily: 'var(--font-ui)', fontSize: 11, color: 'var(--ink-soft)',
+            textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8
+          }}>
             Параметры — {meta.title}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 10 }}>
@@ -916,17 +918,17 @@ function ExerciseBody({ block, onPatch }: { block: ExerciseBlock; onPatch: (p: P
       <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 6 }}>
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--ink-soft)' }}>№</span>
         <input value={block.number ?? ''} onChange={e => onPatch({ number: e.target.value } as Partial<ExerciseBlock>)}
-               placeholder="1.2" style={{ width: 60, padding: '3px 6px', fontFamily: 'var(--font-mono)', fontSize: 12, border: '1px solid var(--rule)', borderRadius: 2, background: 'var(--paper)' }} />
+          placeholder="1.2" style={{ width: 60, padding: '3px 6px', fontFamily: 'var(--font-mono)', fontSize: 12, border: '1px solid var(--rule)', borderRadius: 2, background: 'var(--paper)' }} />
       </div>
       <label style={lbl}>Условие</label>
       <textarea value={block.question} onChange={e => onPatch({ question: e.target.value } as Partial<ExerciseBlock>)}
-                rows={2} style={{ width: '100%', padding: 8, fontFamily: 'var(--font-serif-body)', fontSize: 14, border: '1px solid var(--rule)', borderRadius: 2, background: 'var(--paper)', color: 'var(--ink)' }} />
+        rows={2} style={{ width: '100%', padding: 8, fontFamily: 'var(--font-serif-body)', fontSize: 14, border: '1px solid var(--rule)', borderRadius: 2, background: 'var(--paper)', color: 'var(--ink)' }} />
       <label style={lbl}>Ответ</label>
       <input value={block.answer} onChange={e => onPatch({ answer: e.target.value } as Partial<ExerciseBlock>)}
-             style={{ width: '100%', padding: 8, fontFamily: 'var(--font-mono)', fontSize: 13, border: '1px solid var(--rule)', borderRadius: 2, background: 'var(--paper)', color: 'var(--ink)' }} />
+        style={{ width: '100%', padding: 8, fontFamily: 'var(--font-mono)', fontSize: 13, border: '1px solid var(--rule)', borderRadius: 2, background: 'var(--paper)', color: 'var(--ink)' }} />
       <label style={lbl}>Решение</label>
       <textarea value={block.explanation} onChange={e => onPatch({ explanation: e.target.value } as Partial<ExerciseBlock>)}
-                rows={3} style={{ width: '100%', padding: 8, fontFamily: 'var(--font-serif-body)', fontSize: 14, border: '1px solid var(--rule)', borderRadius: 2, background: 'var(--paper)', color: 'var(--ink)' }} />
+        rows={3} style={{ width: '100%', padding: 8, fontFamily: 'var(--font-serif-body)', fontSize: 14, border: '1px solid var(--rule)', borderRadius: 2, background: 'var(--paper)', color: 'var(--ink)' }} />
     </div>
   )
 }
@@ -935,12 +937,12 @@ function QuoteBody({ block, onPatch }: { block: QuoteBlock; onPatch: (p: Partial
   return (
     <div style={{ borderLeft: '3px solid var(--gold)', padding: '6px 18px', background: 'rgba(160,122,60,0.05)' }}>
       <textarea value={block.content} onChange={e => onPatch({ content: e.target.value } as Partial<QuoteBlock>)}
-                rows={Math.max(2, block.content.split('\n').length)}
-                style={{ width: '100%', background: 'transparent', border: 'none', outline: 'none', resize: 'vertical', fontFamily: 'var(--font-serif-body)', fontStyle: 'italic', fontSize: 17, color: 'var(--ink)', lineHeight: 1.6 }}
-                placeholder="Цитата" />
+        rows={Math.max(2, block.content.split('\n').length)}
+        style={{ width: '100%', background: 'transparent', border: 'none', outline: 'none', resize: 'vertical', fontFamily: 'var(--font-serif-body)', fontStyle: 'italic', fontSize: 17, color: 'var(--ink)', lineHeight: 1.6 }}
+        placeholder="Цитата" />
       <input value={block.author ?? ''} onChange={e => onPatch({ author: e.target.value } as Partial<QuoteBlock>)}
-             placeholder="— Автор"
-             style={{ width: '100%', background: 'transparent', border: 'none', outline: 'none', textAlign: 'right', fontFamily: 'var(--font-serif-body)', fontSize: 13, color: 'var(--ink-soft)' }} />
+        placeholder="— Автор"
+        style={{ width: '100%', background: 'transparent', border: 'none', outline: 'none', textAlign: 'right', fontFamily: 'var(--font-serif-body)', fontSize: 13, color: 'var(--ink-soft)' }} />
     </div>
   )
 }
@@ -952,12 +954,12 @@ function DividerBody({ block, onPatch }: { block: DividerBlock; onPatch: (p: Par
       <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
         {styles.map(s => (
           <button key={s} onClick={() => onPatch({ style: s } as Partial<DividerBlock>)}
-                  style={{
-                    padding: '3px 10px', cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 11,
-                    background: (block.style ?? 'fancy') === s ? 'var(--ink)' : 'transparent',
-                    color: (block.style ?? 'fancy') === s ? '#faf6ec' : 'var(--ink)',
-                    border: '1px solid var(--rule)', borderRadius: 2,
-                  }}>
+            style={{
+              padding: '3px 10px', cursor: 'pointer', fontFamily: 'var(--font-ui)', fontSize: 11,
+              background: (block.style ?? 'fancy') === s ? 'var(--ink)' : 'transparent',
+              color: (block.style ?? 'fancy') === s ? '#faf6ec' : 'var(--ink)',
+              border: '1px solid var(--rule)', borderRadius: 2,
+            }}>
             {s}
           </button>
         ))}
