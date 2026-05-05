@@ -1,5 +1,3 @@
-// ───────────────────────────── Типы блоков конспекта ─────────────────────────────
-
 export type BlockType =
   | 'header'
   | 'theory'
@@ -9,6 +7,11 @@ export type BlockType =
   | 'exercise'
   | 'quote'
   | 'divider'
+  | 'diagram'
+  | 'flowchart'
+  | 'table'
+  | 'formula'
+  | 'checklist'
 
 interface BaseBlock { id: string; type: BlockType }
 
@@ -29,6 +32,7 @@ export interface PythonBlock extends BaseBlock {
   content: string
   title: string
   description: string
+  language?: string
 }
 
 export interface ImageBlock extends BaseBlock {
@@ -55,6 +59,7 @@ export interface ExerciseBlock extends BaseBlock {
   answer: string
   explanation: string
   number?: string
+  difficulty?: 'easy' | 'medium' | 'hard'
 }
 
 export interface QuoteBlock extends BaseBlock {
@@ -68,6 +73,79 @@ export interface DividerBlock extends BaseBlock {
   style?: 'plain' | 'fancy' | 'flourish'
 }
 
+export interface DiagramBlock extends BaseBlock {
+  type: 'diagram'
+  nodes: DiagramNode[]
+  edges: DiagramEdge[]
+  caption?: string
+  layout?: 'force' | 'hierarchical' | 'circular'
+}
+
+export interface DiagramNode {
+  id: string
+  label: string
+  x: number
+  y: number
+  color?: string
+  shape?: 'rect' | 'circle' | 'diamond' | 'cylinder'
+  description?: string
+}
+
+export interface DiagramEdge {
+  id: string
+  from: string
+  to: string
+  label?: string
+  style?: 'solid' | 'dashed' | 'dotted'
+  arrow?: 'forward' | 'backward' | 'both' | 'none'
+}
+
+export interface FlowchartBlock extends BaseBlock {
+  type: 'flowchart'
+  nodes: FlowchartNode[]
+  edges: FlowchartEdge[]
+  caption?: string
+  direction?: 'TB' | 'LR'
+}
+
+export interface FlowchartNode {
+  id: string
+  label: string
+  shape: 'start' | 'end' | 'process' | 'decision' | 'io' | 'subroutine'
+  x?: number
+  y?: number
+  note?: string
+}
+
+export interface FlowchartEdge {
+  id: string
+  from: string
+  to: string
+  label?: string
+  condition?: 'yes' | 'no'
+}
+
+export interface TableBlock extends BaseBlock {
+  type: 'table'
+  caption?: string
+  headers: string[]
+  rows: string[][]
+  striped?: boolean
+}
+
+export interface FormulaBlock extends BaseBlock {
+  type: 'formula'
+  latex: string
+  caption?: string
+  inline?: boolean
+}
+
+export interface ChecklistBlock extends BaseBlock {
+  type: 'checklist'
+  title?: string
+  items: { id: string; text: string; checked: boolean }[]
+}
+
 export type Block =
   | HeaderBlock
   | TheoryBlock
@@ -77,8 +155,11 @@ export type Block =
   | ExerciseBlock
   | QuoteBlock
   | DividerBlock
-
-// ───────────────────────────── Иерархия ─────────────────────────────
+  | DiagramBlock
+  | FlowchartBlock
+  | TableBlock
+  | FormulaBlock
+  | ChecklistBlock
 
 export interface Note {
   id: string
@@ -86,6 +167,9 @@ export interface Note {
   blocks: Block[]
   createdAt: number
   updatedAt: number
+  tags?: string[]
+  subject?: string
+  color?: string
 }
 
 export interface Chapter {
@@ -103,32 +187,36 @@ export interface Book {
   chapters: Chapter[]
   createdAt: number
   updatedAt: number
+  subject?: string
+  tags?: string[]
+  coverColor?: string
 }
-
-// ───────────────────────────── Реестр блоков ─────────────────────────────
 
 export interface BlockMeta {
   type: BlockType
   label: string
   glyph: string
   hint: string
+  group?: string
 }
 
 export const BLOCK_REGISTRY: BlockMeta[] = [
-  { type: 'header', label: 'Заголовок', glyph: '¶', hint: 'Раздел / подраздел' },
-  { type: 'theory', label: 'Текст', glyph: 'A', hint: 'Параграф теории, поддерживает разметку' },
-  { type: 'python', label: 'Python', glyph: '{ }', hint: 'Блок исходного кода' },
-  { type: 'image', label: 'Изображение', glyph: '◫', hint: 'Иллюстрация с подписью' },
-  { type: 'animation', label: 'Визуализация', glyph: '∿', hint: '20 готовых анимаций по матем. и физике' },
-  { type: 'exercise', label: 'Задача', glyph: '?', hint: 'Упражнение со скрытым решением' },
-  { type: 'quote', label: 'Цитата', glyph: '“', hint: 'Эпиграф или цитата автора' },
-  { type: 'divider', label: 'Разделитель', glyph: '✦', hint: 'Орнаментальная черта' },
+  { type: 'header', label: 'Заголовок', glyph: '¶', hint: 'Раздел / подраздел', group: 'text' },
+  { type: 'theory', label: 'Текст', glyph: 'A', hint: 'Параграф теории', group: 'text' },
+  { type: 'python', label: 'Код', glyph: '{}', hint: 'Блок исходного кода (Python, JS, SQL…)', group: 'code' },
+  { type: 'formula', label: 'Формула', glyph: '∑', hint: 'LaTeX-формула', group: 'text' },
+  { type: 'image', label: 'Изображение', glyph: '◫', hint: 'Иллюстрация с подписью', group: 'media' },
+  { type: 'animation', label: 'Визуализация', glyph: '∿', hint: '20 анимаций по матем. и физике', group: 'media' },
+  { type: 'diagram', label: 'Диаграмма', glyph: '◈', hint: 'Интерактивный граф / схема связей', group: 'diagram' },
+  { type: 'flowchart', label: 'Блок-схема', glyph: '⬡', hint: 'Логическая блок-схема алгоритма', group: 'diagram' },
+  { type: 'table', label: 'Таблица', glyph: '⊞', hint: 'Таблица с заголовками', group: 'text' },
+  { type: 'exercise', label: 'Задача', glyph: '?', hint: 'Упражнение со скрытым решением', group: 'interactive' },
+  { type: 'checklist', label: 'Чеклист', glyph: '✓', hint: 'Список задач / требований', group: 'interactive' },
+  { type: 'quote', label: 'Цитата', glyph: '"', hint: 'Эпиграф или цитата', group: 'text' },
+  { type: 'divider', label: 'Разделитель', glyph: '✦', hint: 'Орнаментальная черта', group: 'text' },
 ]
 
-// ───────────────────────────── Анимации (20 шт) ─────────────────────────────
-
 export type AnimType =
-  // Математика
   | 'function-derivative'
   | 'linear-transform'
   | 'fourier-series'
@@ -139,7 +227,6 @@ export type AnimType =
   | 'monte-carlo-integral'
   | 'vector-field-curl'
   | 'least-squares'
-  // Физика
   | 'projectile'
   | 'kepler-orbit'
   | 'two-source-interference'
@@ -150,6 +237,16 @@ export type AnimType =
   | 'pendulum'
   | 'time-dilation'
   | 'quantum-well'
+  | 'sorting-bubble'
+  | 'sorting-merge'
+  | 'binary-search'
+  | 'linked-list'
+  | 'binary-tree'
+  | 'hash-table'
+  | 'network-packet'
+  | 'encryption-xor'
+  | 'rsa-demo'
+  | 'osi-layers'
 
 export type ParamKind = 'number' | 'select' | 'boolean'
 
@@ -166,15 +263,14 @@ export interface ParamSpec {
 
 export interface AnimMeta {
   type: AnimType
-  category: 'math' | 'physics'
+  category: 'math' | 'physics' | 'algorithms' | 'networks' | 'security'
   title: string
   description: string
   params: ParamSpec[]
+  subject?: string
 }
 
-// Полный реестр анимаций — порядок параметров определяет UI
 export const ANIM_REGISTRY: AnimMeta[] = [
-  // ── Математика ────────────────────────────────────────────────────
   {
     type: 'function-derivative',
     category: 'math',
@@ -200,10 +296,10 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Линейное преобразование',
     description: 'Матрица 2×2 деформирует сетку и базисные векторы',
     params: [
-      { key: 'm11', label: 'a (строка 1, столбец 1)', kind: 'number', min: -2, max: 2, step: 0.05, default: 1.4 },
-      { key: 'm12', label: 'b (строка 1, столбец 2)', kind: 'number', min: -2, max: 2, step: 0.05, default: 0.6 },
-      { key: 'm21', label: 'c (строка 2, столбец 1)', kind: 'number', min: -2, max: 2, step: 0.05, default: -0.3 },
-      { key: 'm22', label: 'd (строка 2, столбец 2)', kind: 'number', min: -2, max: 2, step: 0.05, default: 1.1 },
+      { key: 'm11', label: 'a', kind: 'number', min: -2, max: 2, step: 0.05, default: 1.4 },
+      { key: 'm12', label: 'b', kind: 'number', min: -2, max: 2, step: 0.05, default: 0.6 },
+      { key: 'm21', label: 'c', kind: 'number', min: -2, max: 2, step: 0.05, default: -0.3 },
+      { key: 'm22', label: 'd', kind: 'number', min: -2, max: 2, step: 0.05, default: 1.1 },
       { key: 'showEigen', label: 'Собственные векторы', kind: 'boolean', default: true },
     ],
   },
@@ -215,13 +311,13 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     params: [
       { key: 'N', label: 'Число гармоник N', kind: 'number', min: 1, max: 50, step: 1, default: 9 },
       {
-        key: 'shape', label: 'Целевой сигнал', kind: 'select', default: 'square', options: [
+        key: 'shape', label: 'Сигнал', kind: 'select', default: 'square', options: [
           { value: 'square', label: 'Прямоугольный' },
           { value: 'triangle', label: 'Треугольный' },
           { value: 'sawtooth', label: 'Пила' },
         ]
       },
-      { key: 'showTarget', label: 'Показать целевой сигнал', kind: 'boolean', default: true },
+      { key: 'showTarget', label: 'Целевой сигнал', kind: 'boolean', default: true },
     ],
   },
   {
@@ -237,19 +333,19 @@ export const ANIM_REGISTRY: AnimMeta[] = [
           { value: 'sincos', label: 'sin x · cos y' },
         ]
       },
-      { key: 'density', label: 'Плотность векторов', kind: 'number', min: 6, max: 20, step: 1, default: 12 },
-      { key: 'levels', label: 'Кол-во линий уровня', kind: 'number', min: 4, max: 20, step: 1, default: 10 },
+      { key: 'density', label: 'Плотность', kind: 'number', min: 6, max: 20, step: 1, default: 12 },
+      { key: 'levels', label: 'Линии уровня', kind: 'number', min: 4, max: 20, step: 1, default: 10 },
     ],
   },
   {
     type: 'complex-power',
     category: 'math',
-    title: 'Возведение комплексного числа в степень',
+    title: 'Комплексная степень',
     description: 'Окружность переходит в w = zⁿ',
     params: [
       { key: 'n', label: 'Показатель n', kind: 'number', min: -3, max: 5, step: 0.1, default: 2 },
       { key: 'radius', label: 'Радиус |z|', kind: 'number', min: 0.3, max: 1.6, step: 0.05, default: 1 },
-      { key: 'rotate', label: 'Анимировать поворот', kind: 'boolean', default: true },
+      { key: 'rotate', label: 'Анимировать', kind: 'boolean', default: true },
     ],
   },
   {
@@ -277,15 +373,15 @@ export const ANIM_REGISTRY: AnimMeta[] = [
           { value: 'sin', label: 'sin x' },
         ]
       },
-      { key: 'x0', label: 'Стартовая x₀', kind: 'number', min: -3, max: 3, step: 0.05, default: 1.6 },
-      { key: 'iters', label: 'Число итераций', kind: 'number', min: 1, max: 12, step: 1, default: 6 },
+      { key: 'x0', label: 'Старт x₀', kind: 'number', min: -3, max: 3, step: 0.05, default: 1.6 },
+      { key: 'iters', label: 'Итераций', kind: 'number', min: 1, max: 12, step: 1, default: 6 },
     ],
   },
   {
     type: 'monte-carlo-integral',
     category: 'math',
     title: 'Метод Монте-Карло',
-    description: 'Оценка площади под кривой случайными бросками',
+    description: 'Оценка площади случайными бросками',
     params: [
       {
         key: 'fn', label: 'Функция', kind: 'select', default: 'bell', options: [
@@ -294,7 +390,7 @@ export const ANIM_REGISTRY: AnimMeta[] = [
           { value: 'parab', label: '1 − x²' },
         ]
       },
-      { key: 'samples', label: 'Число точек', kind: 'number', min: 50, max: 4000, step: 50, default: 800 },
+      { key: 'samples', label: 'Точек', kind: 'number', min: 50, max: 4000, step: 50, default: 800 },
     ],
   },
   {
@@ -317,28 +413,27 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     type: 'least-squares',
     category: 'math',
     title: 'Метод наименьших квадратов',
-    description: 'Облако точек, регрессия и сумма квадратов ошибок',
+    description: 'Облако точек, регрессия и ошибки',
     params: [
       { key: 'noise', label: 'Шум σ', kind: 'number', min: 0, max: 1.5, step: 0.05, default: 0.5 },
-      { key: 'degree', label: 'Степень полинома', kind: 'number', min: 1, max: 5, step: 1, default: 1 },
-      { key: 'points', label: 'Кол-во точек', kind: 'number', min: 10, max: 80, step: 1, default: 30 },
+      { key: 'degree', label: 'Степень', kind: 'number', min: 1, max: 5, step: 1, default: 1 },
+      { key: 'points', label: 'Точек', kind: 'number', min: 10, max: 80, step: 1, default: 30 },
     ],
   },
-  // ── Физика ────────────────────────────────────────────────────────
   {
     type: 'projectile',
     category: 'physics',
-    title: 'Бросок под углом к горизонту',
+    title: 'Бросок под углом',
     description: 'Траектория, векторы скорости и ускорения',
     params: [
-      { key: 'v0', label: 'Начальная скорость v₀ (м/с)', kind: 'number', min: 5, max: 60, step: 1, default: 25 },
+      { key: 'v0', label: 'Скорость v₀ (м/с)', kind: 'number', min: 5, max: 60, step: 1, default: 25 },
       { key: 'angle', label: 'Угол α (°)', kind: 'number', min: 5, max: 85, step: 1, default: 45 },
       {
         key: 'g', label: 'Гравитация', kind: 'select', default: 'earth', options: [
           { value: 'earth', label: 'Земля (9.8)' }, { value: 'moon', label: 'Луна (1.6)' }, { value: 'mars', label: 'Марс (3.7)' },
         ]
       },
-      { key: 'drag', label: 'Сопротивление воздуха', kind: 'number', min: 0, max: 0.05, step: 0.002, default: 0 },
+      { key: 'drag', label: 'Сопр. воздуха', kind: 'number', min: 0, max: 0.05, step: 0.002, default: 0 },
     ],
   },
   {
@@ -347,40 +442,40 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     title: 'Кеплеровская орбита',
     description: 'Орбита спутника, заметаемая площадь',
     params: [
-      { key: 'mass', label: 'Масса центра M', kind: 'number', min: 0.5, max: 4, step: 0.05, default: 1.4 },
-      { key: 'r0', label: 'Начальное расстояние', kind: 'number', min: 0.4, max: 1.6, step: 0.02, default: 0.9 },
-      { key: 'v0', label: 'Начальная скорость v', kind: 'number', min: 0.4, max: 1.6, step: 0.02, default: 1.1 },
-      { key: 'showArea', label: 'Заметаемая площадь', kind: 'boolean', default: true },
+      { key: 'mass', label: 'Масса M', kind: 'number', min: 0.5, max: 4, step: 0.05, default: 1.4 },
+      { key: 'r0', label: 'Расстояние', kind: 'number', min: 0.4, max: 1.6, step: 0.02, default: 0.9 },
+      { key: 'v0', label: 'Скорость v', kind: 'number', min: 0.4, max: 1.6, step: 0.02, default: 1.1 },
+      { key: 'showArea', label: 'Площадь', kind: 'boolean', default: true },
     ],
   },
   {
     type: 'two-source-interference',
     category: 'physics',
-    title: 'Интерференция двух источников',
-    description: 'Карта интенсивности волн на поверхности воды',
+    title: 'Интерференция волн',
+    description: 'Карта интенсивности двух источников',
     params: [
       { key: 'wavelength', label: 'Длина волны λ', kind: 'number', min: 0.05, max: 0.4, step: 0.005, default: 0.16 },
-      { key: 'distance', label: 'Расст. между источниками d', kind: 'number', min: 0.1, max: 0.7, step: 0.01, default: 0.4 },
-      { key: 'phase', label: 'Разность фаз Δφ', kind: 'number', min: 0, max: 6.28, step: 0.05, default: 0 },
+      { key: 'distance', label: 'Расст. d', kind: 'number', min: 0.1, max: 0.7, step: 0.01, default: 0.4 },
+      { key: 'phase', label: 'Разн. фаз', kind: 'number', min: 0, max: 6.28, step: 0.05, default: 0 },
     ],
   },
   {
     type: 'electric-field',
     category: 'physics',
-    title: 'Электрическое поле зарядов',
-    description: 'Линии E и эквипотенциали для системы точечных зарядов',
+    title: 'Электрическое поле',
+    description: 'Линии E и эквипотенциали',
     params: [
       { key: 'q1', label: 'Заряд q₁', kind: 'number', min: -3, max: 3, step: 0.1, default: 1 },
       { key: 'q2', label: 'Заряд q₂', kind: 'number', min: -3, max: 3, step: 0.1, default: -1 },
       { key: 'sep', label: 'Расстояние', kind: 'number', min: 0.2, max: 1.4, step: 0.02, default: 0.7 },
-      { key: 'showPotential', label: 'Эквипотенциальные линии', kind: 'boolean', default: true },
+      { key: 'showPotential', label: 'Эквипотенциали', kind: 'boolean', default: true },
     ],
   },
   {
     type: 'rlc-circuit',
     category: 'physics',
     title: 'RLC-контур',
-    description: 'Осциллограммы тока и напряжения, фазовый портрет',
+    description: 'Осциллограммы тока и напряжения',
     params: [
       { key: 'L', label: 'Индуктивность L', kind: 'number', min: 0.1, max: 4, step: 0.05, default: 1 },
       { key: 'C', label: 'Ёмкость C', kind: 'number', min: 0.1, max: 4, step: 0.05, default: 1 },
@@ -392,7 +487,7 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     type: 'maxwell-distribution',
     category: 'physics',
     title: 'Распределение Максвелла',
-    description: 'Гистограмма скоростей частиц газа vs теория',
+    description: 'Скорости частиц газа',
     params: [
       { key: 'T', label: 'Температура T (K)', kind: 'number', min: 100, max: 1500, step: 25, default: 300 },
       {
@@ -400,7 +495,7 @@ export const ANIM_REGISTRY: AnimMeta[] = [
           { value: 'He', label: 'Гелий (4)' }, { value: 'N2', label: 'Азот (28)' }, { value: 'Xe', label: 'Ксенон (131)' },
         ]
       },
-      { key: 'showMarkers', label: 'Отметить v_p, v_avg, v_rms', kind: 'boolean', default: true },
+      { key: 'showMarkers', label: 'Маркеры v_p, v_avg', kind: 'boolean', default: true },
     ],
   },
   {
@@ -418,12 +513,12 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     type: 'pendulum',
     category: 'physics',
     title: 'Маятник',
-    description: 'Раскачивание и фазовый портрет (угол — скорость)',
+    description: 'Раскачивание и фазовый портрет',
     params: [
       { key: 'L', label: 'Длина L (м)', kind: 'number', min: 0.3, max: 3, step: 0.05, default: 1 },
-      { key: 'theta0', label: 'Нач. угол θ₀ (°)', kind: 'number', min: 5, max: 170, step: 1, default: 35 },
+      { key: 'theta0', label: 'Угол θ₀ (°)', kind: 'number', min: 5, max: 170, step: 1, default: 35 },
       { key: 'beta', label: 'Затухание β', kind: 'number', min: 0, max: 0.5, step: 0.005, default: 0.02 },
-      { key: 'drive', label: 'Вынуждающая сила', kind: 'number', min: 0, max: 1.5, step: 0.05, default: 0 },
+      { key: 'drive', label: 'Вынужд. сила', kind: 'number', min: 0, max: 1.5, step: 0.05, default: 0 },
     ],
   },
   {
@@ -440,12 +535,149 @@ export const ANIM_REGISTRY: AnimMeta[] = [
     type: 'quantum-well',
     category: 'physics',
     title: 'Квантовая яма',
-    description: 'Уровни энергии и |ψ|² частицы в яме',
+    description: 'Уровни энергии и |ψ|²',
     params: [
       { key: 'L', label: 'Ширина L', kind: 'number', min: 0.4, max: 2, step: 0.05, default: 1 },
       { key: 'U0', label: 'Глубина U₀', kind: 'number', min: 5, max: 100, step: 1, default: 40 },
       { key: 'n', label: 'Уровень n', kind: 'number', min: 1, max: 6, step: 1, default: 1 },
-      { key: 'finite', label: 'Конечная яма (туннелирование)', kind: 'boolean', default: true },
+      { key: 'finite', label: 'Конечная яма', kind: 'boolean', default: true },
+    ],
+  },
+  {
+    type: 'sorting-bubble',
+    category: 'algorithms',
+    title: 'Сортировка пузырьком',
+    description: 'Пошаговая визуализация bubble sort',
+    subject: '09.02.07',
+    params: [
+      { key: 'size', label: 'Размер массива', kind: 'number', min: 5, max: 20, step: 1, default: 10 },
+      { key: 'speed', label: 'Скорость', kind: 'number', min: 1, max: 10, step: 1, default: 5 },
+    ],
+  },
+  {
+    type: 'sorting-merge',
+    category: 'algorithms',
+    title: 'Сортировка слиянием',
+    description: 'Визуализация merge sort с деревом рекурсии',
+    subject: '09.02.07',
+    params: [
+      { key: 'size', label: 'Размер', kind: 'number', min: 4, max: 16, step: 1, default: 8 },
+      { key: 'speed', label: 'Скорость', kind: 'number', min: 1, max: 10, step: 1, default: 5 },
+    ],
+  },
+  {
+    type: 'binary-search',
+    category: 'algorithms',
+    title: 'Бинарный поиск',
+    description: 'Визуализация поиска с сужением диапазона',
+    subject: '09.02.07',
+    params: [
+      { key: 'size', label: 'Размер', kind: 'number', min: 8, max: 30, step: 1, default: 16 },
+      { key: 'target', label: 'Ищем', kind: 'number', min: 1, max: 30, step: 1, default: 7 },
+    ],
+  },
+  {
+    type: 'linked-list',
+    category: 'algorithms',
+    title: 'Связный список',
+    description: 'Операции insert/delete/traverse',
+    subject: '09.02.07',
+    params: [
+      { key: 'size', label: 'Элементов', kind: 'number', min: 3, max: 8, step: 1, default: 5 },
+      { key: 'doubly', label: 'Двусвязный', kind: 'boolean', default: false },
+    ],
+  },
+  {
+    type: 'binary-tree',
+    category: 'algorithms',
+    title: 'Бинарное дерево поиска',
+    description: 'Вставка, удаление, обходы',
+    subject: '09.02.07',
+    params: [
+      { key: 'values', label: 'Ключей', kind: 'number', min: 4, max: 12, step: 1, default: 7 },
+      { key: 'balanced', label: 'AVL-балансировка', kind: 'boolean', default: false },
+    ],
+  },
+  {
+    type: 'hash-table',
+    category: 'algorithms',
+    title: 'Хэш-таблица',
+    description: 'Коллизии и методы разрешения',
+    subject: '09.02.07',
+    params: [
+      { key: 'size', label: 'Размер таблицы', kind: 'number', min: 5, max: 15, step: 1, default: 8 },
+      {
+        key: 'method', label: 'Метод', kind: 'select', default: 'chain', options: [
+          { value: 'chain', label: 'Цепочки' },
+          { value: 'open', label: 'Открытая адресация' },
+        ]
+      },
+    ],
+  },
+  {
+    type: 'network-packet',
+    category: 'networks',
+    title: 'Маршрутизация пакета',
+    description: 'Путь пакета через узлы сети',
+    subject: '10.02.05',
+    params: [
+      { key: 'nodes', label: 'Узлов', kind: 'number', min: 4, max: 10, step: 1, default: 6 },
+      {
+        key: 'protocol', label: 'Протокол', kind: 'select', default: 'tcp', options: [
+          { value: 'tcp', label: 'TCP' }, { value: 'udp', label: 'UDP' },
+        ]
+      },
+    ],
+  },
+  {
+    type: 'encryption-xor',
+    category: 'security',
+    title: 'XOR-шифрование',
+    description: 'Побитовое шифрование XOR с ключом',
+    subject: '10.02.05',
+    params: [
+      { key: 'bits', label: 'Бит в блоке', kind: 'number', min: 4, max: 8, step: 1, default: 8 },
+      { key: 'animate', label: 'Анимировать', kind: 'boolean', default: true },
+    ],
+  },
+  {
+    type: 'rsa-demo',
+    category: 'security',
+    title: 'RSA: шифрование',
+    description: 'Демонстрация алгоритма RSA (малые числа)',
+    subject: '10.02.05',
+    params: [
+      {
+        key: 'p', label: 'Простое p', kind: 'select', default: '5', options: [
+          { value: '3', label: '3' }, { value: '5', label: '5' },
+          { value: '7', label: '7' }, { value: '11', label: '11' },
+        ]
+      },
+      {
+        key: 'q', label: 'Простое q', kind: 'select', default: '11', options: [
+          { value: '7', label: '7' }, { value: '11', label: '11' },
+          { value: '13', label: '13' }, { value: '17', label: '17' },
+        ]
+      },
+    ],
+  },
+  {
+    type: 'osi-layers',
+    category: 'networks',
+    title: 'Модель OSI',
+    description: 'Инкапсуляция данных по уровням',
+    subject: '10.02.05',
+    params: [
+      {
+        key: 'direction', label: 'Направление', kind: 'select', default: 'down', options: [
+          { value: 'down', label: 'Отправка (вниз)' }, { value: 'up', label: 'Приём (вверх)' },
+        ]
+      },
+      {
+        key: 'protocol', label: 'Протокол', kind: 'select', default: 'http', options: [
+          { value: 'http', label: 'HTTP' }, { value: 'smtp', label: 'SMTP' }, { value: 'ftp', label: 'FTP' },
+        ]
+      },
     ],
   },
 ]
@@ -453,6 +685,9 @@ export const ANIM_REGISTRY: AnimMeta[] = [
 export const ANIMS_BY_CATEGORY = {
   math: ANIM_REGISTRY.filter(a => a.category === 'math'),
   physics: ANIM_REGISTRY.filter(a => a.category === 'physics'),
+  algorithms: ANIM_REGISTRY.filter(a => a.category === 'algorithms'),
+  networks: ANIM_REGISTRY.filter(a => a.category === 'networks'),
+  security: ANIM_REGISTRY.filter(a => a.category === 'security'),
 }
 
 export function defaultAnimParams(type: AnimType): Record<string, number | string | boolean> {
